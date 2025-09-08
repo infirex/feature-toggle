@@ -52,7 +52,7 @@ export class User {
         // tenant: this.tenant.id
       },
       process.env.JWT_SECRET as Secret,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' } as SignOptions
+      { expiresIn: process.env.JWT_EXPIRES_IN } as SignOptions
     )
   }
 

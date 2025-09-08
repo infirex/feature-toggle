@@ -45,19 +45,6 @@ const loginController = async (req: Request, res: Response, next: NextFunction) 
   }
 }
 
-const logoutController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.cookie('access_token', '', {
-      httpOnly: true,
-      expires: new Date(0),
-      secure: process.env.NODE_ENV === 'production'
-    })
-    res.status(200).json({ message: 'Logout successful' })
-  } catch (error) {
-    next(error)
-  }
-}
-
 const getMeController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     res.status(200).json(req.user)
@@ -66,4 +53,4 @@ const getMeController = async (req: Request, res: Response, next: NextFunction) 
   }
 }
 
-export { getMeController, loginController, logoutController, registerController }
+export { getMeController, loginController, registerController }
