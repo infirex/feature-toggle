@@ -7,10 +7,12 @@ import path from 'path'
 import { errorHandler, rateLimiter } from './middleware'
 import indexRouter from './routes/index'
 import { AppError } from './utils/AppError'
+import helmet from 'helmet'
 
 const app = express()
 
 app.use(cors())
+app.use(helmet())
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
