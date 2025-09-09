@@ -5,7 +5,8 @@
   "scripts": {
     "start": "tsc && cross-env DEBUG=feature-toggle:* node ./dist",
     "dev": "nodemon --watch src -e ts,js --exec \"yarn start\"",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "clear-db": "ts-node src/clearDb.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -14,6 +15,7 @@
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
     "express": "~4.16.1",
+    "ioredis": "^5.7.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
     "pg": "^8.16.3",

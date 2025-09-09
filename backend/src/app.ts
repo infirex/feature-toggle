@@ -4,7 +4,7 @@ import cors from 'cors'
 import express, { NextFunction, Request, Response } from 'express'
 import logger from 'morgan'
 import path from 'path'
-import { errorHandler } from './middleware'
+import { errorHandler, rateLimiter } from './middleware'
 import indexRouter from './routes/index'
 import { AppError } from './utils/AppError'
 
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/api', indexRouter)
+app.use('/api', rateLimiter, indexRouter)
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {

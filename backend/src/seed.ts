@@ -4,6 +4,7 @@ config({ path: join(__dirname, '../.env') })
 
 import { AppDataSource } from './helpers/dbHelpers'
 import { Feature, Tenant } from './models'
+import { randomUUID } from 'crypto'
 
 async function seed() {
   await AppDataSource.initialize()
@@ -16,9 +17,12 @@ async function seed() {
   for (const name of tenants) {
     const existing = await tenantRepo.findOne({ where: { name } })
     if (!existing) {
-      const tenant = tenantRepo.create({ name })
+      const tenant = tenantRepo.create({
+        name,
+        apiKey: randomUUID() // generate a unique API key
+      })
       await tenantRepo.save(tenant)
-      console.log(`Tenant created: ${name}`)
+      console.log(`Tenant created: ${name}, API Key: ${tenant.apiKey}`)
     }
   }
 

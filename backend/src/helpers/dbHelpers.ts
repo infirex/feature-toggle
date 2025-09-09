@@ -9,8 +9,8 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER as string,
   password: process.env.DB_PASSWORD as string,
   database: process.env.DB_NAME as string,
-  synchronize: true,
-  logging: true,
+  synchronize: process.env.NODE_ENV !== 'production',
+  logging: false,
   entities: [User, Feature, FeatureFlag, Tenant, AuditLog],
   migrations: [],
   subscribers: []
