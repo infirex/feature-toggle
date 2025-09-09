@@ -8,12 +8,12 @@ const router = express.Router()
 
 router.use('/auth', auth)
 
-router.use('/', rateLimiter)
+// router.use('/', rateLimiter)
 
 // features
-router.use('/features', feature)
+router.use('/features', rateLimiter, feature)
 
 // audit logs
-router.use('/audit-logs', audit)
+router.use('/audit-logs', rateLimiter, audit)
 
 export default router
