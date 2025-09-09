@@ -1,26 +1,28 @@
-// // backend/src/models/AuditLog.ts
-// import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm'
 
-// @Entity()
-// export class AuditLog {
-//   @PrimaryGeneratedColumn()
-//   id: number
+@Entity('audit_logs')
+export class AuditLog {
+  @PrimaryGeneratedColumn()
+  id!: number
 
-//   @Column()
-//   actor: string
+  @Column()
+  actor!: string // user email or id
 
-//   @Column()
-//   action: string
+  @Column()
+  action!: string // create | update | delete | promote
 
-//   @Column()
-//   feature_flag_id: number
+  @Column()
+  entity!: string // e.g. "FeatureFlag"
 
-//   @Column({ type: 'jsonb', nullable: true })
-//   before_state: any
+  @Column()
+  entityId!: number
 
-//   @Column({ type: 'jsonb', nullable: true })
-//   after_state: any
+  @Column({ type: 'jsonb', nullable: true })
+  before!: any
 
-//   @CreateDateColumn()
-//   created_at: Date
-// }
+  @Column({ type: 'jsonb', nullable: true })
+  after!: any
+
+  @CreateDateColumn()
+  created_at!: Date
+}

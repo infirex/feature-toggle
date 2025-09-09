@@ -1,3 +1,4 @@
+// @route /api/features
 import { Router } from 'express'
 import { FeatureController } from '../controllers'
 import { getAccess2Route } from '../middleware'

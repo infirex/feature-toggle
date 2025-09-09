@@ -16,19 +16,32 @@ export class FeatureController {
 
   static readonly createOrUpdateFeature = asyncWrapper(async (req: Request, res: Response) => {
     const { tenant, env, featureKey, enabled } = req.body
-    const flag = await featureService.createOrUpdateFlag(tenant, env, featureKey, enabled)
+    const flag = await featureService.createOrUpdateFlag(
+      tenant,
+      env,
+      featureKey,
+      enabled,
+      req.user?.email
+    )
     res.json(flag)
   })
 
   static readonly deleteFeature = asyncWrapper(async (req: Request, res: Response) => {
     const { tenant, env, featureKey } = req.body
-    const result = await featureService.deleteFlag(tenant, env, featureKey)
+    const result = await featureService.deleteFlag(tenant, env, featureKey, req.user?.email)
     res.json(result)
   })
 
   static readonly promoteFeatures = asyncWrapper(async (req: Request, res: Response) => {
     const { tenant, fromEnv, toEnv, featureKeys, dryRun = true } = req.body
-    const result = await featureService.promoteFlags(tenant, featureKeys, fromEnv, toEnv, dryRun)
+    const result = await featureService.promoteFlags(
+      tenant,
+      featureKeys,
+      fromEnv,
+      toEnv,
+      dryRun,
+      req.user?.email
+    )
     res.json(result)
   })
 }
