@@ -6,6 +6,7 @@ import createError, { HttpError } from 'http-errors'
 import logger from 'morgan'
 import path from 'path'
 import indexRouter from './routes/index'
+import { errorHandler } from './middleware/errorHandler'
 
 const app = express()
 
@@ -24,9 +25,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 })
 
 // error handler
-app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-  res.status(err.status || 500)
-  res.send(err.message)
-})
+app.use(errorHandler)
 
 export default app
