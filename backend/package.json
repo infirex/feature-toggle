@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "tsc && cross-env DEBUG=feature-toggle:* node ./dist",
-    "dev": "nodemon --watch src -e ts,js --exec \"yarn start\""
+    "dev": "nodemon --watch src -e ts,js --exec \"yarn start\"",
+    "seed": "ts-node src/seed.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -30,6 +31,7 @@
     "@types/node": "^22.8.6",
     "cross-env": "^10.0.0",
     "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
 }
