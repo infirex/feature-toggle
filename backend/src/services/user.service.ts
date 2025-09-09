@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm'
-import { AppDataSource } from '../helpers/dbHelpers'
+import { AppDataSource } from '../helpers/dataSource'
 import { AppError } from '../utils/AppError'
 import { User } from '../models'
 

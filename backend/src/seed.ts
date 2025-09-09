@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import { join } from 'path'
 config({ path: join(__dirname, '../.env') })
 
-import { AppDataSource } from './helpers/dbHelpers'
+import { AppDataSource } from './helpers/dataSource'
 import { Feature, Tenant } from './models'
 
 async function seed() {

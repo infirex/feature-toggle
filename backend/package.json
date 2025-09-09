@@ -6,7 +6,11 @@
     "start": "tsc && cross-env DEBUG=feature-toggle:* node ./dist",
     "dev": "nodemon --watch src -e ts,js --exec \"yarn start\"",
     "seed": "ts-node src/seed.ts",
-    "clear-db": "ts-node src/clearDb.ts"
+    "clear-db": "ts-node src/clearDb.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:generate": "yarn typeorm migration:generate -d src/helpers/dataSource.ts",
+    "migration:run": "yarn typeorm migration:run -d src/helpers/dataSource.ts",
+    "migration:revert": "yarn typeorm migration:revert -d src/helpers/dataSource.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -35,6 +39,7 @@
     "cross-env": "^10.0.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
   }
 }

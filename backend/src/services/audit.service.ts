@@ -1,6 +1,6 @@
 // services/AuditService.ts
 import { Repository } from 'typeorm'
-import { AppDataSource } from '../helpers/dbHelpers'
+import { AppDataSource } from '../helpers/dataSource'
 import { AuditLog } from '../models'
 
 export class AuditService {

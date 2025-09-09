@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { AppDataSource } from '../helpers/dbHelpers'
+import { AppDataSource } from '../helpers/dataSource'
 import { Tenant } from '../models/Tenant'
 import { AppError } from '../utils/AppError'
 

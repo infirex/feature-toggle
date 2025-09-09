@@ -1,4 +1,4 @@
-import { AppDataSource } from '../helpers/dbHelpers'
+import { AppDataSource } from '../helpers/dataSource'
 import { Feature, FeatureFlag, Tenant } from '../models'
 import { AppError } from '../utils/AppError'
 import { auditService } from './audit.service'

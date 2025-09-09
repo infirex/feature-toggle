@@ -3,7 +3,7 @@ import { join } from 'path'
 config({ path: join(__dirname, '../.env') })
 
 import 'reflect-metadata'
-import { AppDataSource } from './helpers/dbHelpers'
+import { AppDataSource } from './helpers/dataSource'
 import { User, Feature, FeatureFlag, Tenant, AuditLog } from './models'
 
 async function clearDatabase() {

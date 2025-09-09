@@ -1,51 +1,46 @@
-# Typescript Express Skelly
+## Database Schema Changes in Production
 
-Typescript Express Skelly is a bare-bones scaffold to get an Express server up and running w/ Typescript.
+I follow a **controlled migration workflow** using TypeORM to safely manage database schema changes in production.
 
-## Description
+### 1️⃣ Develop & Test Locally
 
-Setting up a project with express-generator has been one of the go to ways to get an Express server up and running quickly, especially for newer developers in the Node.js ecosystem. From there, the user can add/remove dependencies as the application evolves. HOWEVER, express-generator does not support typescript out of the box. The goal was to make something lightweight (not bloated with dependencies which the developer may not need) and keep the relative simplicity of express-generator all while supporting typescript from the jump.
-
-Ideally catered to newer developers in the Node.js ecosystem. Some other repositories aimed at setting up an Express server already come with auth configurations, database connectivity and ORM/ODM, various abstraction layers, etc. w/ daunting directory setups that may seem difficult to understand for folks dipping their toes into Node for the first time. Of course, more experienced folks are welcome to use it as well! Keep it simple!
-
-## Features
-
-- same dependencies as express-generator (morgan, http-errors, debug, cookie-parser)
-- cors added
-- templating removed
-- nodemon setup
-- typescript
-- simple directory setup. Server execution in src/index.ts
-
-```
-├── public
-│   └── images
-├── src
-│   ├── index.ts
-│   ├── app.ts
-│   ├── controllers
-│   │   └── indexControllers.ts
-│   └── routes
-│       └── index.ts
-├── .gitignore
-├── package.json
-├── package-lock.json
-└── tsconfig.json
-```
-
-## Set Up
-
-Clone this repo into a directory of choice to get started
+- Create or modify **entities** in the codebase.
+- Generate a migration file with:
 
 ```bash
-git clone git@github.com:Applefrittr/typescript-express-skelly.git
+yarn migration:generate src/migrations/DescriptiveMigrationName
 ```
 
-## Usage
+- Review the generated SQL to ensure it is correct.
+- Test migration on local/dev database.
 
-To get the Express server running (using npm)
+### 2️⃣ Commit & Code Review
+
+- Commit the migration file along with code changes.
+- Perform code review to verify migration correctness.
+
+### 3️⃣ Run Migration in Production
+
+- Ensure the production database connection settings are correct.
+- Run the migration:
 
 ```bash
-cd typescript-express-skelly
-npm run dev
+yarn migration:run
 ```
+
+- Migrations are tracked in the `migrations` table to prevent re-applying the same migration.
+
+### 4️⃣ Revert if Needed
+
+- If a migration needs to be reverted (rare), use:
+
+```bash
+yarn migration:revert
+```
+
+### 5️⃣ Best Practices
+
+- `synchronize: false` in production — never auto-sync schemas.
+- Migrations are **version-controlled**, idempotent, and reviewed.
+- Always backup production DB before running critical migrations.
+

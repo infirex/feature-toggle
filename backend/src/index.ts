@@ -1,5 +1,5 @@
 import app from './app'
-import { AppDataSource } from './helpers/dbHelpers'
+import { AppDataSource } from './helpers/dataSource'
 
 const PORT = process.env.PORT || 8000
 
