@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 import { FeatureFlag } from './FeatureFlag'
+import { randomBytes } from 'crypto'
 
 @Entity('tenants')
 export class Tenant {
@@ -14,4 +15,9 @@ export class Tenant {
 
   @OneToMany(() => FeatureFlag, (flag) => flag.tenant)
   featureFlags!: FeatureFlag[]
+
+  // Helper to generate new API keys
+  static generateApiKey() {
+    return randomBytes(32).toString('hex')
+  }
 }

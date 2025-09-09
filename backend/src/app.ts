@@ -1,13 +1,13 @@
-import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import 'dotenv/config'
 import express, { NextFunction, Request, Response } from 'express'
+import helmet from 'helmet'
 import logger from 'morgan'
 import path from 'path'
-import { errorHandler, rateLimiter } from './middleware'
+import { errorHandler } from './middleware'
 import indexRouter from './routes/index'
 import { AppError } from './utils/AppError'
-import helmet from 'helmet'
 
 const app = express()
 
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/api', rateLimiter, indexRouter)
+app.use('/api', indexRouter)
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {

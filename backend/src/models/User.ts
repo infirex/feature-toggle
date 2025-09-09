@@ -1,4 +1,3 @@
-// entities/User.ts
 import bcrypt from 'bcrypt'
 import jwt, { Secret, SignOptions } from 'jsonwebtoken'
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm'
@@ -16,9 +15,6 @@ export class User {
 
   @Column()
   name?: string
-
-  // @ManyToOne(() => Tenant, (tenant) => tenant.users, { onDelete: 'CASCADE' })
-  // tenant!: Tenant
 
   @CreateDateColumn()
   created_at!: Date
@@ -49,7 +45,6 @@ export class User {
       {
         id: this.id,
         email: this.email
-        // tenant: this.tenant.id
       },
       process.env.JWT_SECRET as Secret,
       { expiresIn: process.env.JWT_EXPIRES_IN } as SignOptions

@@ -4,9 +4,9 @@ import { asyncWrapper } from '../utils/AsyncWrapper'
 
 export class FeatureController {
   static readonly getFeatures = asyncWrapper(async (req: Request, res: Response) => {
-    const { tenant, env, page, limit } = req.query
+    const { env, page, limit } = req.query
     const data = await featureService.listFlags(
-      tenant as string,
+      req.user?.tenant as string,
       env as string,
       Number(page) || 1,
       Number(limit) || 20
@@ -15,9 +15,9 @@ export class FeatureController {
   })
 
   static readonly createOrUpdateFeature = asyncWrapper(async (req: Request, res: Response) => {
-    const { tenant, env, featureKey, enabled } = req.body
+    const { env, featureKey, enabled } = req.body
     const flag = await featureService.createOrUpdateFlag(
-      tenant,
+      req.user?.tenant as string,
       env,
       featureKey,
       enabled,
@@ -27,15 +27,20 @@ export class FeatureController {
   })
 
   static readonly deleteFeature = asyncWrapper(async (req: Request, res: Response) => {
-    const { tenant, env, featureKey } = req.body
-    const result = await featureService.deleteFlag(tenant, env, featureKey, req.user?.email)
+    const { env, featureKey } = req.body
+    const result = await featureService.deleteFlag(
+      req.user?.tenant as string,
+      env,
+      featureKey,
+      req.user?.email
+    )
     res.json(result)
   })
 
   static readonly promoteFeatures = asyncWrapper(async (req: Request, res: Response) => {
-    const { tenant, fromEnv, toEnv, featureKeys, dryRun = true } = req.body
+    const { fromEnv, toEnv, featureKeys, dryRun = true } = req.body
     const result = await featureService.promoteFlags(
-      tenant,
+      req.user?.tenant as string,
       featureKeys,
       fromEnv,
       toEnv,

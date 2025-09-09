@@ -1,11 +1,11 @@
 // @route /api/features
 import { Router } from 'express'
 import { FeatureController } from '../controllers'
-import { getAccess2Route } from '../middleware'
+import { attachTenant, getAccess2Route } from '../middleware'
 
 const router = Router()
 
-router.use('/', getAccess2Route)
+router.use('/', getAccess2Route, attachTenant)
 
 router.post('/promote', FeatureController.promoteFeatures)
 
