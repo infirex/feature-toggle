@@ -1,36 +1,34 @@
-// // backend/src/models/FeatureFlag.ts
-// import {
-//   Entity,
-//   PrimaryGeneratedColumn,
-//   ManyToOne,
-//   Column,
-//   UpdateDateColumn,
-//   Unique
-// } from 'typeorm'
-// import { Tenant } from './Tenant'
-// import { Feature } from './Feature'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn
+} from 'typeorm'
+import { Tenant } from './Tenant'
+import { Feature } from './Feature'
 
-// @Entity()
-// @Unique(['tenant', 'feature', 'env'])
-// export class FeatureFlag {
-//   @PrimaryGeneratedColumn()
-//   id: number
+@Entity('feature_flags')
+export class FeatureFlag {
+  @PrimaryGeneratedColumn()
+  id!: number
 
-//   @ManyToOne(() => Tenant, (tenant) => tenant.feature_flags)
-//   tenant: Tenant
+  @ManyToOne(() => Tenant, (tenant) => tenant.featureFlags, { onDelete: 'CASCADE' })
+  tenant!: Tenant
 
-//   @ManyToOne(() => Feature, (feature) => feature.feature_flags)
-//   feature: Feature
+  @ManyToOne(() => Feature, (feature) => feature.flags, { onDelete: 'CASCADE' })
+  feature!: Feature
 
-//   @Column()
-//   env: string
+  @Column()
+  env!: string // dev, staging, prod
 
-//   @Column({ default: false })
-//   enabled: boolean
+  @Column({ default: false })
+  enabled!: boolean
 
-//   @Column({ type: 'jsonb', default: {} })
-//   strategy: any
+  @CreateDateColumn()
+  created_at!: Date
 
-//   @UpdateDateColumn()
-//   updated_at: Date
-// }
+  @UpdateDateColumn()
+  updated_at!: Date
+}

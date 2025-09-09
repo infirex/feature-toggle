@@ -15,7 +15,7 @@ export class User {
   password!: string
 
   @Column()
-  name!: string
+  name?: string
 
   // @ManyToOne(() => Tenant, (tenant) => tenant.users, { onDelete: 'CASCADE' })
   // tenant!: Tenant
@@ -33,7 +33,7 @@ export class User {
     const responseObject: {
       id: number
       email: string
-      name: string
+      name?: string
       access_token?: string
     } = { id, email, name }
 
