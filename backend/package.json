@@ -1,9 +1,9 @@
 {
-  "name": "todo-server",
+  "name": "feature-toggle",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "tsc && cross-env DEBUG=todo-server:* node ./dist",
+    "start": "tsc && cross-env DEBUG=feature-toggle:* node ./dist",
     "dev": "nodemon --watch src -e ts,js --exec \"yarn start\""
   },
   "dependencies": {
