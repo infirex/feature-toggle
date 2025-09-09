@@ -1,8 +1,5 @@
-// services/FeatureService.ts
 import { AppDataSource } from '../helpers/dbHelpers'
-import { Feature } from '../models/Feature'
-import { FeatureFlag } from '../models/FeatureFlag'
-import { Tenant } from '../models/Tenant'
+import { Feature, FeatureFlag, Tenant } from '../models'
 import { AppError } from '../utils/AppError'
 
 class FeatureService {

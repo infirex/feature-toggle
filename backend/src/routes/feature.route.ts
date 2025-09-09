@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { FeatureController } from '../controllers/feature.controller'
-import { getAccess2Route } from '../middleware/auth'
+import { FeatureController } from '../controllers'
+import { getAccess2Route } from '../middleware'
 
 const router = Router()
 

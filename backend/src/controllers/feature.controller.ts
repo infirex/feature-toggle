@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { featureService } from '../services/featureService'
+import { featureService } from '../services'
 import { asyncWrapper } from '../utils/AsyncWrapper'
 
 export class FeatureController {

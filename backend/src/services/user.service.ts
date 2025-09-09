@@ -1,8 +1,7 @@
-// services/UserService.ts
 import { Repository } from 'typeorm'
 import { AppDataSource } from '../helpers/dbHelpers'
 import { AppError } from '../utils/AppError'
-import { User } from '../models/User'
+import { User } from '../models'
 
 class UserService {
   private readonly userRepo: Repository<User>

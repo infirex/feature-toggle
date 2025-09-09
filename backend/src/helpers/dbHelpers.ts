@@ -1,17 +1,17 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { User } from '../models/User'
+import { Feature, FeatureFlag, Tenant, User } from '../models'
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: Number(process.env.DB_PORT),
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  username: process.env.DB_USER as string,
+  password: process.env.DB_PASSWORD as string,
+  database: process.env.DB_NAME as string,
   synchronize: true,
   logging: true,
-  entities: [User /* Feature, FeatureFlag, AuditLog, Tenant */],
+  entities: [User, Feature, FeatureFlag, Tenant, /* AuditLog */],
   migrations: [],
   subscribers: []
 })

@@ -4,7 +4,7 @@ import cors from 'cors'
 import express, { NextFunction, Request, Response } from 'express'
 import logger from 'morgan'
 import path from 'path'
-import { errorHandler } from './middleware/errorHandler'
+import { errorHandler } from './middleware'
 import indexRouter from './routes/index'
 import { AppError } from './utils/AppError'
 

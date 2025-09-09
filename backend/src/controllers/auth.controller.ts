@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { sendJwtToClient } from '../helpers/auth/tokenHelpers'
-import { userService } from '../services/userService'
+import { userService } from '../services'
 import { asyncWrapper } from '../utils/AsyncWrapper'
 
 export class AuthController {
