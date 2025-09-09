@@ -1,6 +1,30 @@
-version: '3.8'
+version: "3.8"
 
 services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    container_name: feature_toggle_backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: prod
+      DB_USER: admin
+      DB_PASSWORD: admin123
+      DB_NAME: feature_toggle
+      DB_HOST: postgres
+      DB_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: SUPER_SECRET_KEY
+      JWT_EXPIRES_IN: 20m
+      PORT: 3000
+    depends_on:
+      - postgres
+      - redis
+    command: yarn start
+
   postgres:
     image: postgres:15
     container_name: feature_toggle_postgres
@@ -13,6 +37,11 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7
