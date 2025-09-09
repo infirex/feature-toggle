@@ -25,4 +25,10 @@ export class FeatureController {
     const result = await featureService.deleteFlag(tenant, env, featureKey)
     res.json(result)
   })
+
+  static readonly promoteFeatures = asyncWrapper(async (req: Request, res: Response) => {
+    const { tenant, fromEnv, toEnv, featureKeys, dryRun = true } = req.body
+    const result = await featureService.promoteFlags(tenant, featureKeys, fromEnv, toEnv, dryRun)
+    res.json(result)
+  })
 }

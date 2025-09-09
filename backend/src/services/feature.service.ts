@@ -61,6 +61,99 @@ class FeatureService {
     await this.featureFlagRepo.remove(flag)
     return { message: 'Feature flag deleted' }
   }
+
+  async promoteFlags(
+    tenantName: string,
+    featureKeys: string[],
+    fromEnv: string,
+    toEnv: string,
+    dryRun = true
+  ) {
+    // 1. Find tenant
+    const tenant = await this.tenantRepo.findOne({ where: { name: tenantName } })
+    if (!tenant) throw new AppError('Tenant not found', 404)
+
+    const results: {
+      key: string
+      action: string
+      before?: boolean
+      after?: boolean
+      dryRun: boolean
+    }[] = []
+
+    // 2. Process each feature key
+    for (const featureKey of featureKeys) {
+      const res = await this.promoteSingleFlag(tenant, featureKey, fromEnv, toEnv, dryRun)
+      results.push(res)
+    }
+
+    return { tenant: tenantName, fromEnv, toEnv, dryRun, results }
+  }
+
+  // Helper to promote a single flag
+  private async promoteSingleFlag(
+    tenant: Tenant,
+    featureKey: string,
+    fromEnv: string,
+    toEnv: string,
+    dryRun: boolean
+  ) {
+    // find source flag
+    const sourceFlag = await this.featureFlagRepo.findOne({
+      where: { tenant: { id: tenant.id }, env: fromEnv, feature: { key: featureKey } },
+      relations: ['feature', 'tenant']
+    })
+
+    if (!sourceFlag) {
+      throw new AppError(
+        `Feature flag '${featureKey}' not found in '${fromEnv}' for tenant '${tenant.name}'`,
+        404
+      )
+    }
+
+    // find target flag
+    const targetFlag = await this.featureFlagRepo.findOne({
+      where: { tenant: { id: tenant.id }, env: toEnv, feature: { key: featureKey } },
+      relations: ['feature', 'tenant']
+    })
+
+    // overwrite case
+    if (targetFlag) {
+      const result = {
+        key: featureKey,
+        action: dryRun ? 'would overwrite' : 'overwrite',
+        before: targetFlag.enabled,
+        after: sourceFlag.enabled,
+        dryRun
+      }
+
+      if (!dryRun) {
+        targetFlag.enabled = sourceFlag.enabled
+        await this.featureFlagRepo.save(targetFlag)
+      }
+      return result
+    }
+
+    // create case
+    const result = {
+      key: featureKey,
+      action: dryRun ? 'would create' : 'create',
+      after: sourceFlag.enabled,
+      dryRun
+    }
+
+    if (!dryRun) {
+      const newFlag = this.featureFlagRepo.create({
+        tenant,
+        feature: sourceFlag.feature,
+        env: toEnv,
+        enabled: sourceFlag.enabled
+      })
+      await this.featureFlagRepo.save(newFlag)
+    }
+
+    return result
+  }
 }
 
 export const featureService = new FeatureService()
