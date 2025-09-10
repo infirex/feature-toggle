@@ -54,7 +54,9 @@ export class User {
     )
 
     const decoded = jwt.decode(access_token) as { exp: number }
-    const expireDate = new Date(decoded.exp * 1000).toISOString()
+    const expireDate = new Date(decoded.exp * 1000).toLocaleString('tr-TR', {
+      timeZone: 'Europe/Istanbul'
+    })
 
     return { access_token, expireDate }
   }
