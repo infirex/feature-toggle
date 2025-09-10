@@ -16,6 +16,14 @@ A multi-tenant feature toggle service with environment-specific feature flags, a
 
 ---
 ````
+
+---
+## API Documentation
+
+You can access the full API documentation [here](https://documenter.getpostman.com/view/48180481/2sB3HnLzq6).
+
+---
+
 ## ⚙️ Docker Setup
 
 This project uses Docker Compose to run the full stack:
