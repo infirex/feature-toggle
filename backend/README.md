@@ -172,6 +172,7 @@ yarn test:watch
 * **Getting API Keys:** API keys are generated during the seed script and printed to the console. You must use the printed API key for the corresponding tenant in requests.
 * **Request Validation:** All incoming requests from clients are validated. (DTOs or libraries like `express-validator` can be used.)
 * **Redis Usage:** Redis cache is currently used **only for rate limiting**; caching of feature flags or other entities is not yet implemented.
+
 * **Tenant API Keys:** Each tenant has **exactly one API key**, which is used for all tenant-based operations.
 * **Testing Setup:** Tests were intended to run on **in-memory SQLite**, but due to errors, tests currently run against the **real Postgres database**.
 
