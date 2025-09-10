@@ -158,3 +158,21 @@ yarn test:watch
 * Audit logs track all changes with `actor`, `before`, `after` states.
 * Rate limiting per tenant is implemented using Redis (burst + sustained quotas).
 
+Tamam! İşte README’de Notes / Important Details kısmını ve proje açıklamasını İngilizce olarak yazılmış hali:
+
+---
+
+# Feature Toggle Service
+
+A multi-tenant **Feature Toggle Service** that allows tenants to manage and retrieve enabled features in a scalable and secure way.
+The service exposes REST APIs for toggling features per tenant and environment (dev, staging, prod) and includes audit logging, JWT authentication, rate limiting, and optional admin UI.
+
+---
+
+## Important Details
+
+* **Request Validation:** All incoming requests from clients are validated. (DTOs or libraries like `express-validator` can be used.)
+* **Redis Usage:** Redis cache is currently used **only for rate limiting**; caching of feature flags or other entities is not yet implemented.
+* **Tenant API Keys:** Each tenant has **exactly one API key**, which is used for all tenant-based operations.
+* **Testing Setup:** Tests were intended to run on **in-memory SQLite**, but due to errors, tests currently run against the **real Postgres database**.
+
