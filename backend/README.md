@@ -1,46 +1,160 @@
-## Database Schema Changes in Production
+# Feature Toggle Service
 
-I follow a **controlled migration workflow** using TypeORM to safely manage database schema changes in production.
+````markdown
+A multi-tenant feature toggle service with environment-specific feature flags, audit logging, JWT authentication, Redis caching, and observability (Prometheus + Grafana).
 
-### 1️⃣ Develop & Test Locally
+---
 
-- Create or modify **entities** in the codebase.
-- Generate a migration file with:
+## 🏗️ Project Structure
+
+- `src/` – Source code (controllers, services, entities, helpers)
+- `src/models/` – TypeORM entities
+- `src/migrations/` – Database migration scripts
+- `src/__tests__/` – Unit and integration tests
+- `docker-compose.yml` – Services for local dev/prod
+- `.env` – Environment variables
+
+---
+````
+## ⚙️ Docker Setup
+
+This project uses Docker Compose to run the full stack:
+
+- **Backend (Node.js + Express + TypeScript)**
+- **PostgreSQL** – Primary DB
+- **Redis** – Caching and rate limiting
+- **Prometheus + Grafana** – Observability
+
+### Start All Services
 
 ```bash
-yarn migration:generate src/migrations/DescriptiveMigrationName
+docker-compose up -d
+````
+
+### Backend
+
+```bash
+# In development mode
+yarn dev
+
+# In production mode (inside Docker)
+yarn start
 ```
 
-- Review the generated SQL to ensure it is correct.
-- Test migration on local/dev database.
+### PostgreSQL
 
-### 2️⃣ Commit & Code Review
+* Host: `postgres`
+* Port: `5432`
+* User: `admin`
+* Password: `admin123`
+* Database: `feature_toggle`
 
-- Commit the migration file along with code changes.
-- Perform code review to verify migration correctness.
+### Redis
 
-### 3️⃣ Run Migration in Production
+* Host: `redis`
+* Port: `6379`
 
-- Ensure the production database connection settings are correct.
-- Run the migration:
+---
+
+## 🔑 Environment Variables
+
+| Variable         | Description                       | Default            |
+| ---------------- | --------------------------------- | ------------------ |
+| `NODE_ENV`       | Environment (dev/prod)            | `prod`             |
+| `DB_USER`        | PostgreSQL username               | `admin`            |
+| `DB_PASSWORD`    | PostgreSQL password               | `admin123`         |
+| `DB_NAME`        | PostgreSQL database name          | `feature_toggle`   |
+| `DB_HOST`        | PostgreSQL host                   | `postgres`         |
+| `DB_PORT`        | PostgreSQL port                   | `5432`             |
+| `REDIS_HOST`     | Redis host                        | `redis`            |
+| `REDIS_PORT`     | Redis port                        | `6379`             |
+| `JWT_SECRET`     | Secret key for JWT                | `SUPER_SECRET_KEY` |
+| `JWT_EXPIRES_IN` | JWT expiration (e.g., `1h`, `7d`) | `1h`               |
+| `PORT`           | Backend listening port            | `3050`             |
+
+---
+
+## 🛠️ Database
+
+### Initialize / Seed DB
 
 ```bash
+# Clear database
+yarn clear-db
+
+# Seed tenants and features
+yarn seed
+```
+
+### TypeORM Migrations
+
+```bash
+# Generate migration
+yarn migration:generate src/migrations/NameOfMigration
+
+# Run migrations
 yarn migration:run
-```
 
-- Migrations are tracked in the `migrations` table to prevent re-applying the same migration.
-
-### 4️⃣ Revert if Needed
-
-- If a migration needs to be reverted (rare), use:
-
-```bash
+# Revert last migration
 yarn migration:revert
 ```
 
-### 5️⃣ Best Practices
+---
 
-- `synchronize: false` in production — never auto-sync schemas.
-- Migrations are **version-controlled**, idempotent, and reviewed.
-- Always backup production DB before running critical migrations.
+## 🔐 Authentication
+
+* JWT-based authentication
+* Tenant identification via **API Key**
+* Example header for API requests:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+x-api-key: <TENANT_API_KEY>
+```
+
+---
+
+## 🚀 API Endpoints
+
+| Method | Route                | Description                                     |
+| ------ | -------------------- | ----------------------------------------------- |
+| POST   | `/api/auth/register` | Register new user                               |
+| POST   | `/api/auth/login`    | Login and get JWT                               |
+| GET    | `/features`          | Get feature flags (supports tenant & env query) |
+| POST   | `/features`          | Create or update a feature flag                 |
+| DELETE | `/features`          | Delete a feature flag                           |
+| POST   | `/features/promote`  | Promote flags from one environment to another   |
+| GET    | `/audit-logs`        | Paginated audit logs                            |
+
+---
+
+## 📊 Observability
+
+* Prometheus: `http://localhost:9090`
+* Grafana: `http://localhost:3000` (admin/admin123)
+
+> Metrics include request logging, errors, and feature flag fetches.
+
+---
+
+## 🧪 Testing
+
+* Uses **Jest** for unit and integration tests.
+* Run tests:
+
+```bash
+yarn test
+yarn test:watch
+```
+
+* Make sure to **seed test DB** before running integration tests.
+
+---
+
+## 📝 Notes
+
+* Tenants must have a unique API key (`apiKey`) generated in seed script.
+* Feature flags support multiple environments (`dev`, `staging`, `prod`).
+* Audit logs track all changes with `actor`, `before`, `after` states.
+* Rate limiting per tenant is implemented using Redis (burst + sustained quotas).
 
