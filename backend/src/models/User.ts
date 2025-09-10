@@ -31,17 +31,20 @@ export class User {
       email: string
       name?: string
       access_token?: string
+      expire_date?: string
     } = { id, email, name }
 
     if (showToken) {
-      responseObject.access_token = this.generateJWT()
+      const { access_token, expireDate } = this.generateJWT()
+      responseObject.access_token = access_token
+      responseObject.expire_date = expireDate
     }
 
     return responseObject
   }
 
   private generateJWT() {
-    return jwt.sign(
+    const access_token = jwt.sign(
       {
         id: this.id,
         email: this.email
@@ -49,6 +52,11 @@ export class User {
       process.env.JWT_SECRET as Secret,
       { expiresIn: process.env.JWT_EXPIRES_IN } as SignOptions
     )
+
+    const decoded = jwt.decode(access_token) as { exp: number }
+    const expireDate = new Date(decoded.exp * 1000).toISOString()
+
+    return { access_token, expireDate }
   }
 
   async comparePassword(attempt: string) {
