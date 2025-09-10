@@ -39,6 +39,36 @@ This project uses Docker Compose to run the full stack:
 docker-compose up -d
 ````
 
+---
+
+## Usage Flow
+
+1. **Seed the database**
+   Run the seed script:
+
+   ```bash
+   yarn seed
+   ```
+
+   This will create the initial tenants (e.g., `zebra`, `lion`, `tiger`) and generate their **API keys**.
+   The API keys will be **printed in the console output** — you need to copy the API key for your tenant.
+
+2. **Register a user**
+   Send a `POST /api/auth/register` request with your email and password to create a user account.
+
+3. **Login**
+   Send a `POST /api/auth/login` request with the same credentials to obtain an **access\_token (JWT)**.
+
+4. **Access protected routes**
+   For all other routes (e.g., `/api/features`, `/api/audit-logs`), you must provide **both**:
+
+   * `Authorization: Bearer <access_token>`
+   * `x-api-key: <tenant_api_key>`
+
+   This ensures that requests are both **user-authenticated** (via JWT) and **tenant-scoped** (via API key).
+
+---
+
 ### Backend
 
 ```bash
