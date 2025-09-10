@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import { Home, Login, Register, Tasks } from './pages'
+import { Home, Login, Register } from './pages'
 import useAuth from './store/useAuth'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/tasks" element={<Tasks />} />
+            {/* <Route path="/features" element={<Features />} /> */}
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
