@@ -15,14 +15,20 @@ const Login: React.FC = () => {
     }
   }, [user])
 
+
   const [isLoading, setIsLoading] = useState(false)
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    await api.post('/auth/login', { email, password })
-    setIsLoading(false)
-    navigate('/')
+    try {
+      e.preventDefault()
+      setIsLoading(true)
+      await api.post('/auth/login', { email, password })
+      setIsLoading(false)
+      navigate('/')
+    } catch (error) {
+      console.error(error)
+      setIsLoading(false)
+    }
   }
 
   return (

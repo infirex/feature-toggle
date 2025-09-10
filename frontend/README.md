@@ -1,69 +1,77 @@
-# React + TypeScript + Vite
+# Feature Toggle Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the **frontend client** for the Feature Toggle system.
+It is built using **Vite + TypeScript** and communicates with the backend APIs.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Scripts
 
-## Expanding the ESLint configuration
+Available commands in `package.json`:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* **`yarn dev`**
+  Starts the development server with hot-reload.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  ```bash
+  yarn dev
+  ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+  The app will be available at [http://localhost:5173](http://localhost:5173).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* **`yarn build`**
+  Builds the frontend for production.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  ```bash
+  yarn build
+  ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+  The compiled files will be in the `dist/` folder.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* **`yarn preview`**
+  Serves the production build locally for testing.
+
+  ```bash
+  yarn preview
+  ```
+
+* **`yarn lint`**
+  Runs ESLint to check for code style and linting errors.
+
+  ```bash
+  yarn lint
+  ```
+
+---
+
+## Development Workflow
+
+1. Make sure the backend (Node.js + Postgres + Redis) is running via `docker-compose`.
+2. Start the frontend:
+
+   ```bash
+   yarn dev
+   ```
+3. Login via the provided login form.
+
+   * You will need a **tenant API key** (from backend seed script).
+   * And a **JWT access\_token** (via `/auth/login`).
+4. Other UI flows (feature management, audit logs, etc.) are **not yet implemented**.
+
+---
+
+## Production Deployment
+
+1. Build the app:
+
+   ```bash
+   yarn build
+   ```
+2. Serve the `dist/` folder using a static server (e.g., `nginx`, `Vercel`, or any hosting provider).
+3. Ensure the frontend’s `VITE_API_URL` matches your backend API URL in production.
+
+---
+
+## Notes
+
+* 🔑 The frontend depends on **API key + JWT authentication** from the backend.
+* 📌 At the moment, **only the login flow is functional**. Other frontend functionality is not yet implemented.

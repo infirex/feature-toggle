@@ -1,7 +1,7 @@
-export interface TaskItemProps {
+export interface FeatureItemProps {
   id: string
   title: string
   description: string
   createAt: number
-  completed?: boolean
+  env?: boolean
 }
